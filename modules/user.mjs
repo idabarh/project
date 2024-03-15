@@ -1,3 +1,4 @@
+
 class User {
 
     constructor() {
@@ -7,6 +8,6 @@ class User {
         this.name;
         this.id;
     }
-}
-
-export default User;
+  }
+  
+  export default User;
