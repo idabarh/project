@@ -5,11 +5,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My app</title>
+    <script src="./main.js"></script>
 </head>
 
-
 <body>
-    <h1>Hei</h1>
+
+    <div style="padding: 20px;">
+        <button onclick="showLogin()">Login</button>
+        <button onclick="showCreateUser()">Create User</button>
+        <button onclick="showSignOutButton()">Sign out</button>
+    </div>
+
+    <div id="divCreateUser" style="display: none;">
+        Name : <input type="text" id="name" value="Test"><br>
+        Email: <input type="email" id="email" value="test@test.no"><br />
+        Password: <input type="password" id="pswHash" value="123"><br />
+        <button id="createUserButton">Create User</button>
+    </div>
+
+    <div id="divSignOutUser" style="display: none;">
+        <button id="signOutButton">Sign Out</button>
+    </div>
+
+    <div id="divLogin" style="display: none;">
+        Email: <input type="email" id="loginEmail" value="test@test.no"><br />
+        Password: <input type="password" id="loginPswHash" value="123"><br />
+        <button id="loginButton">Login</button>
+    </div>
+
+    <script>
+        const divCreateUser = document.getElementById("divCreateUser");
+        const divLogin = document.getElementById("divLogin");
+        const createUserButton = document.getElementById("createUserButton");
+        const loginButton = document.getElementById("loginButton");
+        const signOutButton = document.getElementById("signOutButton");
+        let userID;
+
+        createUserButton.onclick = async function (e) {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("pswHash").value;
+            sha256(password, async (pswHash) => {
+                const user = { name, email, pswHash };
+                const respon = await postTo("/user", user);
+            });
+        }
+
+        loginButton.onclick = async function(e){
+            const email = document.getElementById("loginEmail").value;
+            let password = document.getElementById("loginPswHash").value;
+            sha256(password, async (pswHash) => {
+                let user = { email, pswHash };
+                console.log(user);
+                const resp = await postTo("/user/login", user);
+                const shema = await resp.json();
+                console.log(shema);
+                userID = shema.data.id;
+                localStorage.setItem("userID", userID);
+                showSignOutButton();
+                location.reload();
+            });  
+        }
+
+        signOutButton.onclick = function(e){
+            localStorage.removeItem("userID");
+            showLogin();
+            location.reload();
+        } 
+
+        document.addEventListener("DOMContentLoaded", (e) => {
+            userID = parseInt(localStorage.getItem("userID"));
+            if(userID){
+                showCreateUser();
+                showSignOutButton();
+            }else{
+                showLogin();
+            }
+        });
+
+        function showCreateUser(){
+            divLogin.style.display = "none";
+            divCreateUser.style.display = "block";
+        }
+
+        function showLogin(){
+            divCreateUser.style.display = "none";
+            divLogin.style.display = "block";
+        }
+
+        function showSignOutButton(){
+            divSignOutUser.style.display = "block";
+        }
+
+    </script>
+
 </body>
 
 </html>
