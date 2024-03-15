@@ -1,4 +1,4 @@
-"use strict"
+
 
 function sha256(str, callback) {
     const encoder = new TextEncoder();
@@ -14,6 +14,7 @@ function sha256(str, callback) {
 
   async function postTo(url, data) {
     const header = {
+    
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -22,4 +23,9 @@ function sha256(str, callback) {
     };
     const respon = await fetch(url, header);
     return respon;
+}
+
+function logout(){
+    localStorage.clear();
+    location.reload();
 }
