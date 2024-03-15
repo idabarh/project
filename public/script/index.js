@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     userID = parseInt(localStorage.getItem("userID"));
     if (userID) {
-        //showNotes(); // Vis notatfeltet hvis brukeren er logget inn
+    // Vis notatfeltet hvis brukeren er logget inn
     } else {
         showLogin();
     }
@@ -29,7 +29,7 @@ function showCreateUser() {
             const user = { name, email, pswHash };
             const response = await postTo("/user", user);
             if (response.ok) {
-               // showNotes(); // Kaller funksjonen for å vise notatene etter at en bruker er opprettet
+            // Kaller funksjonen for å vise notatene etter at en bruker er opprettet
             }
         });
     };
@@ -56,6 +56,4 @@ function showLogin() {
         });
     };
 }
-
-
 
