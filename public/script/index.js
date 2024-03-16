@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     userID = parseInt(localStorage.getItem("userID"));
     if (userID) {
-    // Vis notatfeltet hvis brukeren er logget inn
+        showToDoList(); // Viser to-do lista når brukaren e logga inn
     } else {
         showLogin();
     }
@@ -29,7 +29,7 @@ function showCreateUser() {
             const user = { name, email, pswHash };
             const response = await postTo("/user", user);
             if (response.ok) {
-            // Kaller funksjonen for å vise notatene etter at en bruker er opprettet
+                showToDoList(); 
             }
         });
     };
@@ -57,3 +57,93 @@ function showLogin() {
     };
 }
 
+function showToDoList() {
+    loadTemplate("menu_1", divMenu, true);
+    loadTemplate("todoList", divContent, true);
+
+    const addTodoButton = document.getElementById("addTodoButton");
+    addTodoButton.addEventListener("click", addTodo);
+
+    loadExistingTodos(); // Last inn eksisterende oppgaver fra localStorage
+}
+
+function loadExistingTodos() {
+    const todoItemsList = document.getElementById("todoItems");
+    todoItemsList.innerHTML = "";
+
+    const todos = JSON.parse(localStorage.getItem("todos")) || [];
+    
+    todos.forEach(todo => {
+        const li = createTodoItem(todo);
+        todoItemsList.appendChild(li);
+    });
+}
+
+function createTodoItem(todo) {
+    const li = document.createElement("li");
+    
+    // Legg til oppgavetekst
+    const todoText = document.createElement("span");
+    todoText.textContent = todo;
+    li.appendChild(todoText);
+
+    // Legg til sletteknapp
+    const deleteButton = createDeleteButton(todo);
+    li.appendChild(deleteButton);
+
+    return li;
+}
+
+function createDeleteButton(todo) {
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Fjern";
+    deleteButton.addEventListener("click", () => {
+        deleteTodoItem(todo);
+        loadExistingTodos(); // Oppdater listen etter sletting
+    });
+    return deleteButton;
+}
+
+function deleteTodoItem(todo) {
+    let todos = JSON.parse(localStorage.getItem("todos")) || [];
+    todos = todos.filter(item => item !== todo);
+    localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+function addTodo() {
+    const todoItemInput = document.getElementById("todoItem");
+    const todoItem = todoItemInput.value.trim();
+
+    if (todoItem !== "") {
+        const todoItemsList = document.getElementById("todoItems");
+        const li = createTodoItem(todoItem);
+        todoItemsList.appendChild(li);
+
+        saveTodoToLocalstorage(todoItem);
+
+        todoItemInput.value = "";
+    }
+}
+
+function saveTodoToLocalstorage(todo) {
+    const todos = JSON.parse(localStorage.getItem("todos")) || [];
+    todos.push(todo);
+    localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+async function postTo(url, data) {
+    const header = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    };
+    const respon = await fetch(url, header);
+    return respon;
+}
+
+function logout(){
+    localStorage.clear();
+    location.reload();
+}

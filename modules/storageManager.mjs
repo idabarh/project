@@ -1,8 +1,6 @@
 import pg from "pg"
 import SuperLogger from "./SuperLogger.mjs";
 
-
-
 /// TODO: is the structure / design of the DBManager as good as it could be?
 
 class DBManager {

@@ -8,6 +8,24 @@
     <script src="./script/templateLoader.js"></script>
     <script src="./script/index.js"></script>
 </head>
+
+<style>
+    body {
+  background-color: rgba(39, 160, 150, 0.299);
+}
+
+h2 {
+font-family:Arial;
+
+}
+
+.deleteButton {
+    margin-left: 10px;
+
+}
+
+</style>
+
 <body>
     <div id="divMenu"></div>
     <div id="divContent"></div>
@@ -37,6 +55,16 @@
         </div> 
     </template>
 
-   
+    <template id="todoList">
+        <div style="padding: 10px;">
+            <h2>To-Do list</h2>
+            <input type="text" id="todoItem" style="margin-top: 10px;" placeholder="Legg til oppgave">
+            <br><br>
+            <button id="addTodoButton">Legg til oppgave</button><br>
+            <ul id="todoItems"></ul>
+        </div>
+    </template>
+
+
 </body>
 </html>

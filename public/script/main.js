@@ -1,4 +1,4 @@
-
+"use strict";
 
 function sha256(str, callback) {
     const encoder = new TextEncoder();
@@ -10,11 +10,10 @@ function sha256(str, callback) {
         const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");       
         callback(hashHex)
     });
-  }
+}
 
-  async function postTo(url, data) {
+async function postTo(url, data) {
     const header = {
-    
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -24,7 +23,7 @@ function sha256(str, callback) {
     const respon = await fetch(url, header);
     return respon;
 }
-
+//tømme loacl-storage når man logger it og man blir ført til logg inn sida:)
 function logout(){
     localStorage.clear();
     location.reload();
