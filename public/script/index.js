@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", (e) => {
 
     userID = parseInt(localStorage.getItem("userID"));
     if (userID) {
-        showToDoList(); // Viser to-do lista når brukaren e logga inn
+        showToDoList(); // Viser to-do lista når brukaren er logget inn
     } else {
         showLogin();
     }
@@ -106,13 +106,21 @@ function createDeleteButton(todo) {
 
 function deleteTodoItem(todo) {
     let todos = JSON.parse(localStorage.getItem("todos")) || [];
-    todos = todos.filter(item => item !== todo);
-    localStorage.setItem("todos", JSON.stringify(todos));
+    const updatedTodos = [];
+
+    for (let i = 0; i < todos.length; i++) {
+        if (todos[i] !== todo) {
+            updatedTodos.push(todos[i]);
+        }
+    }
+
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
 }
+
 
 function addTodo() {
     const todoItemInput = document.getElementById("todoItem");
-    const todoItem = todoItemInput.value.trim();
+    const todoItem = todoItemInput.value.replace();
 
     if (todoItem !== "") {
         const todoItemsList = document.getElementById("todoItems");

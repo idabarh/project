@@ -1,7 +1,7 @@
 function loadTemplate(aTemplateID, aDestinationElement, aEmptyElement = false) {
   const tl = document.getElementById(aTemplateID);
   if (tl.content) {
-    //klone den her for den skal vere synlig
+    //klone den her for den skal være synlig
     const clone = tl.content.cloneNode(true);
     if (aDestinationElement) {
       while (aDestinationElement.firstChild) {

@@ -23,7 +23,7 @@ async function postTo(url, data) {
     const respon = await fetch(url, header);
     return respon;
 }
-//tømme loacl-storage når man logger it og man blir ført til logg inn sida:)
+//tømme local-storage når man logger ut og man blir ført til logg inn siden
 function logout(){
     localStorage.clear();
     location.reload();
